@@ -10,6 +10,7 @@ const GET_MOVIES = gql`
     movies {
       id
       medium_cover_image
+      isLiked @client
     }
   }
 `;
@@ -51,15 +52,17 @@ const Loading = styled.div`
 const Movies = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 25px;
-  width: 100%;
-  postion: relatives;
+  grid-gap: 30px;
+  width: 70%;
+  padding-bottom: 40px;
+  position: relative;
   top: -50px;
 `;
 
 export default () => {
   // useQuery를 사용해서 query 보내고 데이터 가졍괴
   const { loading, data } = useQuery(GET_MOVIES);
+  console.log(data);
   return (
     <Container>
       <Header>
@@ -71,7 +74,12 @@ export default () => {
       {!loading && data.movies && (
         <Movies>
           {data.movies.map((m) => (
-            <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+            <Movie
+              key={m.id}
+              id={m.id}
+              isLiked={m.isLiked}
+              bg={m.medium_cover_image}
+            />
           ))}
         </Movies>
       )}
